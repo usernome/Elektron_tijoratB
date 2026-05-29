@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Tijorat — Onlayn Do‘kon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1410;
+  --paper:#f5f0e8;
+  --cream:#ece4d6;
+  --accent:#c2410c;
+  --accent2:#0f766e;
+  --gold:#b08d57;
+  --line:#d8cdb9;
+  --shadow:rgba(40,30,20,.14);
+  --green:#15803d;
+  --red:#b91c1c;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.55;
+  background-image:radial-gradient(circle at 15% 20%, rgba(194,65,12,.05), transparent 40%),
+                   radial-gradient(circle at 85% 70%, rgba(15,118,110,.05), transparent 40%);
+  min-height:100vh;
+}
+h1,h2,h3,h4{font-family:'Fraunces',serif;letter-spacing:-.02em}
+.hidden{display:none!important}
+button{font-family:inherit;cursor:pointer;border:none;transition:all .2s}
+input,select,textarea{font-family:inherit;font-size:.95rem}
+a{color:inherit}
+
+/* ===== TOPBAR ===== */
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(236,228,214,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+  padding:14px 28px;display:flex;align-items:center;justify-content:space-between;
+}
+.topbar .left{display:flex;align-items:center;gap:14px;cursor:pointer}
+.brand-mark{width:38px;height:38px;border-radius:11px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-family:'Fraunces';font-weight:900;font-size:1.2rem}
+.brand-name{font-family:'Fraunces';font-weight:900;font-size:1.2rem}
+.role-chip{padding:5px 12px;border-radius:999px;font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.role-admin{background:var(--accent);color:#fff}
+.role-user{background:var(--accent2);color:#fff}
+.topbar .right{display:flex;align-items:center;gap:12px}
+.user-name{font-weight:600;font-size:.92rem}
+.btn-out{padding:9px 16px;border:1.5px solid var(--line);background:transparent;border-radius:9px;font-weight:600;font-size:.85rem;color:var(--ink)}
+.btn-out:hover{background:var(--ink);color:var(--paper)}
+.btn-fill{padding:9px 18px;background:var(--ink);color:var(--paper);border-radius:9px;font-weight:600;font-size:.85rem}
+.btn-fill:hover{background:var(--accent)}
+.cart-btn{position:relative;padding:9px 14px;background:var(--ink);color:var(--paper);border-radius:9px;font-weight:600;font-size:.85rem}
+.cart-btn:hover{background:var(--accent)}
+.cart-badge{position:absolute;top:-7px;right:-7px;background:var(--accent);color:#fff;border-radius:999px;min-width:20px;height:20px;font-size:.7rem;display:grid;place-items:center;font-weight:700}
+.container{max-width:1180px;margin:0 auto;padding:32px 28px 80px}
+
+/* ===== HERO ===== */
+.hero{
+  background:linear-gradient(120deg,var(--ink),#3a2c1d);
+  color:var(--paper);border-radius:24px;
+  padding:54px 48px;margin-bottom:42px;
+  position:relative;overflow:hidden;
+}
+.hero::before{content:"";position:absolute;top:-80px;right:-40px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,var(--accent),transparent 70%);opacity:.45}
+.hero::after{content:"";position:absolute;bottom:-100px;left:30%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,var(--accent2),transparent 70%);opacity:.35}
+.hero-content{position:relative;z-index:1;max-width:600px}
+.hero .tagline{font-size:.82rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);font-weight:600;margin-bottom:14px}
+.hero h1{font-size:3rem;font-weight:900;line-height:1.05;margin-bottom:16px}
+.hero p{font-size:1.05rem;color:rgba(245,240,232,.82);max-width:480px}
+.hero .cta{margin-top:26px;display:inline-flex;padding:14px 28px;background:var(--paper);color:var(--ink);border-radius:11px;font-weight:600;font-size:.95rem}
+.hero .cta:hover{background:var(--accent);color:#fff;transform:translateY(-2px)}
+
+/* ===== TABS ===== */
+.tabs{display:flex;gap:6px;margin-bottom:30px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.tab{padding:11px 20px;background:transparent;border-radius:10px 10px 0 0;font-weight:600;color:#7a6b54;font-size:.92rem;border-bottom:3px solid transparent;margin-bottom:-1px}
+.tab.active{color:var(--ink);border-bottom-color:var(--accent);background:var(--cream)}
+.tab:hover{color:var(--ink)}
+
+/* ===== STATS ===== */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-bottom:34px}
+.stat{background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:22px;position:relative;overflow:hidden}
+.stat .label{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:#7a6b54;font-weight:600}
+.stat .val{font-family:'Fraunces';font-size:2.1rem;font-weight:900;margin-top:6px}
+.stat .ic{position:absolute;top:18px;right:18px;font-size:1.6rem;opacity:.5}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:16px;flex-wrap:wrap}
+.section-head h2{font-size:1.5rem;font-weight:900}
+
+/* ===== PRODUCT GRID ===== */
+.filters{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;align-items:center}
+.search-box{flex:1;min-width:200px;padding:12px 16px;border:1.5px solid var(--line);border-radius:11px;background:var(--cream);outline:none}
+.search-box:focus{border-color:var(--accent)}
+.cat-select{padding:12px 16px;border:1.5px solid var(--line);border-radius:11px;background:var(--cream);outline:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.card{background:var(--cream);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);box-shadow:0 20px 40px -16px var(--shadow)}
+.card .img{height:170px;background:var(--paper);overflow:hidden;position:relative}
+.card .img img{width:100%;height:100%;object-fit:cover;display:block}
+.card .img .ph{width:100%;height:100%;display:grid;place-items:center;font-size:3rem;background:linear-gradient(135deg,var(--gold),var(--accent2));color:rgba(255,255,255,.85)}
+.card .body{padding:16px;flex:1;display:flex;flex-direction:column}
+.card .cat{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);font-weight:700}
+.card h3{font-size:1.1rem;margin:4px 0;font-weight:600}
+.card .desc{font-size:.84rem;color:#6b5d4a;flex:1;margin-bottom:10px}
+.card .row{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+.price{font-family:'Fraunces';font-weight:900;font-size:1.25rem}
+.stock{font-size:.76rem;color:#7a6b54}
+.stock.low{color:var(--red);font-weight:600}
+.add-btn{margin-top:12px;padding:10px;background:var(--ink);color:var(--paper);border-radius:9px;font-weight:600;font-size:.88rem;width:100%}
+.add-btn:hover{background:var(--accent)}
+.add-btn:disabled{background:#bdb29c;cursor:not-allowed}
+
+/* ===== TABLE ===== */
+.table-wrap{background:var(--cream);border:1px solid var(--line);border-radius:16px;overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th{text-align:left;padding:14px 18px;font-size:.76rem;text-transform:uppercase;letter-spacing:.05em;color:#7a6b54;border-bottom:1px solid var(--line);background:var(--paper)}
+td{padding:14px 18px;border-bottom:1px solid var(--line);font-size:.92rem;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.4)}
+.badge{padding:4px 11px;border-radius:999px;font-size:.75rem;font-weight:600;white-space:nowrap}
+.b-pending{background:#fef3c7;color:#92400e}
+.b-paid{background:#dcfce7;color:#166534}
+.b-shipped{background:#dbeafe;color:#1e40af}
+.b-cancel{background:#fee2e2;color:#991b1b}
+.b-admin{background:#fde68a;color:#854d0e}
+.b-user{background:#ccfbf1;color:#115e59}
+.ico-btn{padding:6px 12px;border-radius:8px;font-size:.8rem;font-weight:600;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);margin-right:4px}
+.ico-btn:hover{background:var(--ink);color:var(--paper)}
+.ico-btn.danger:hover{background:var(--red);border-color:var(--red);color:#fff}
+.tprod{display:flex;align-items:center;gap:10px}
+.tprod img{width:40px;height:40px;border-radius:9px;object-fit:cover;background:var(--paper)}
+
+/* ===== MODAL / DRAWER ===== */
+.overlay{position:fixed;inset:0;background:rgba(26,20,16,.5);backdrop-filter:blur(3px);z-index:100;display:flex;justify-content:flex-end}
+.overlay.center{align-items:center;justify-content:center;padding:24px}
+.drawer{width:100%;max-width:430px;background:var(--paper);height:100%;overflow-y:auto;padding:28px;box-shadow:-20px 0 50px var(--shadow);animation:slideIn .3s}
+@keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
+.modal{background:var(--paper);border-radius:18px;padding:30px;max-width:460px;width:100%;box-shadow:0 30px 60px var(--shadow);animation:pop .25s;max-height:92vh;overflow-y:auto}
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+.drawer-head,.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.drawer-head h2,.modal-head h2{font-size:1.4rem;font-weight:900}
+.close-x{width:34px;height:34px;border-radius:50%;background:var(--cream);border:1px solid var(--line);font-size:1.1rem;color:var(--ink);display:grid;place-items:center}
+.close-x:hover{background:var(--ink);color:var(--paper)}
+
+/* ===== FORM ===== */
+.field{margin-bottom:15px}
+.field label{display:block;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#7a6b54;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:11px;background:var(--cream);outline:none;transition:border .2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.btn-primary{width:100%;padding:14px;background:var(--ink);color:var(--paper);border-radius:11px;font-weight:600;font-size:1rem;margin-top:6px}
+.btn-primary:hover{background:var(--accent);transform:translateY(-1px)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grid .full{grid-column:1/-1}
+.err{color:var(--red);font-size:.85rem;margin-top:8px;min-height:16px;font-weight:500}
+.switch-line{text-align:center;margin-top:18px;font-size:.88rem;color:#6b5d4a}
+.switch-line b{color:var(--accent);cursor:pointer;font-weight:700}
+.hint{margin-top:18px;padding:13px;background:var(--cream);border-radius:11px;border:1px dashed var(--line);font-size:.8rem;color:#6b5d4a}
+.hint b{color:var(--ink)}
+
+/* ===== CART ===== */
+.cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}
+.cart-item .ci-img{width:54px;height:54px;border-radius:11px;object-fit:cover;background:var(--cream);flex-shrink:0}
+.cart-item .ci-info{flex:1}
+.cart-item .ci-info h4{font-size:.95rem;font-weight:600}
+.cart-item .ci-info .p{font-size:.82rem;color:#6b5d4a}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:28px;height:28px;border-radius:8px;background:var(--cream);border:1px solid var(--line);font-weight:700;color:var(--ink)}
+.qty button:hover{background:var(--ink);color:var(--paper)}
+.qty span{min-width:22px;text-align:center;font-weight:600}
+.cart-total{display:flex;justify-content:space-between;align-items:center;padding:20px 0;margin-top:8px;border-top:2px solid var(--ink)}
+.cart-total .t-label{font-weight:600}
+.cart-total .t-val{font-family:'Fraunces';font-size:1.6rem;font-weight:900}
+.empty{text-align:center;padding:50px 20px;color:#7a6b54}
+.empty .e-ic{font-size:3rem;margin-bottom:12px;opacity:.5}
+.pay-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 18px}
+.pay-opt{padding:14px;border:1.5px solid var(--line);border-radius:12px;background:var(--cream);text-align:center;font-weight:600;font-size:.88rem}
+.pay-opt.sel{border-color:var(--accent);background:var(--paper);box-shadow:0 0 0 3px rgba(194,65,12,.12)}
+.pay-opt .pi{font-size:1.5rem;display:block;margin-bottom:4px}
+
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:14px 24px;border-radius:12px;font-weight:600;z-index:200;box-shadow:0 16px 40px var(--shadow);animation:toastIn .3s}
+@keyframes toastIn{from{transform:translate(-50%,20px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+.toast.ok{background:var(--green)}
+.toast.bad{background:var(--red)}
+
+.mini-bars{display:flex;align-items:flex-end;gap:10px;height:170px;padding:16px 0;margin-top:8px}
+.mini-bars .bar{flex:1;background:linear-gradient(to top,var(--accent),var(--gold));border-radius:8px 8px 0 0;position:relative;min-height:8px}
+.mini-bars .bar span{position:absolute;bottom:-22px;left:0;right:0;text-align:center;font-size:.74rem;color:#7a6b54}
+.mini-bars .bar b{position:absolute;top:-22px;left:0;right:0;text-align:center;font-size:.78rem;font-weight:700}
+
+@media(max-width:680px){
+  .container{padding:20px 16px 60px}
+  .topbar{padding:12px 16px}
+  .user-name{display:none}
+  .hero{padding:36px 24px}
+  .hero h1{font-size:2.1rem}
+  .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ TOPBAR ============ -->
+<div class="topbar">
+  <div class="left" onclick="goHome()">
+    <div class="brand-mark">E</div>
+    <div class="brand-name">E‑Tijorat</div>
+    <span id="roleChip" class="role-chip hidden"></span>
+  </div>
+  <div class="right" id="topRight"></div>
+</div>
+
+<div class="container">
+  <div class="tabs hidden" id="tabBar"></div>
+  <div id="view"></div>
+</div>
+
+<div id="modalRoot"></div>
+
+<script>
+/* ============================================================
+   MA'LUMOTLAR BAZASI (in-memory demo)
+   ============================================================ */
+let users = [
+  {id:1, username:'admin', pass:'admin123', role:'admin', name:'Administrator', email:'admin@etijorat.uz', active:true, joined:'2026-01-10'},
+  {id:2, username:'dilshod', pass:'user123', role:'user', name:'Dilshod Rahimov', email:'dilshod@mail.uz', active:true, joined:'2026-03-15'}
+];
+let nextUserId = 3;
+
+/* Rasm fayllari "images/" papkasida bo'lishi kerak (siz yuklaysiz) */
+let products = [
+  {id:1, name:'Simsiz quloqchin', cat:'Elektronika', price:320000, stock:25, img:'images/quloqchin.jpg',  desc:'Bluetooth 5.3, shovqin bostirish funksiyasi bilan.'},
+  {id:2, name:'Smart soat',        cat:'Elektronika', price:890000, stock:12, img:'images/smart-soat.jpg', desc:'Pulsni o‘lchash, qadam hisoblagich, suvga chidamli.'},
+  {id:3, name:'Mexanik klaviatura',cat:'Aksessuar',   price:540000, stock:8,  img:'images/klaviatura.jpg', desc:'RGB yoritish, ko‘k switch, USB-C ulanish.'},
+  {id:4, name:'Kofe quti',         cat:'Oziq-ovqat',  price:75000,  stock:60, img:'images/kofe.jpg',       desc:'Arabika 100%, 250g, qovurilgan donalar.'},
+  {id:5, name:'Charm sumka',       cat:'Moda',        price:1250000,stock:5,  img:'images/sumka.jpg',      desc:'Tabiiy charm, qo‘lda tikilgan, klassik dizayn.'},
+  {id:6, name:'Sport krossovka',   cat:'Moda',        price:680000, stock:18, img:'images/krossovka.jpg',  desc:'Yengil, nafas oluvchi mato, yugurish uchun.'},
+  {id:7, name:'Notebook 14"',      cat:'Elektronika', price:6500000,stock:4,  img:'images/notebook.jpg',   desc:'16GB RAM, 512GB SSD, ish va o‘qish uchun.'},
+  {id:8, name:'Stol chiroq',       cat:'Uy',          price:165000, stock:30, img:'images/chiroq.jpg',     desc:'LED, 3 darajali yorqinlik, USB quvvatlanadi.'}
+];
+let nextProdId = 9;
+
+let orders = [
+  {id:1001, user:'Dilshod Rahimov', items:[{name:'Simsiz quloqchin',qty:1,price:320000}], total:320000, status:'paid', method:'Karta', date:'2026-05-20'},
+  {id:1002, user:'Dilshod Rahimov', items:[{name:'Kofe quti',qty:2,price:75000}], total:150000, status:'shipped', method:'Click', date:'2026-05-22'}
+];
+let nextOrderId = 1003;
+
+let cart = [];
+let session = null;
+let selectedPay = 'Karta';
+let curTab = '';
+let filterText = '';
+let filterCat = 'all';
+
+/* ============================================================
+   SAQLASH (localStorage) — barcha o'zgarishlar saqlanadi
+   ============================================================ */
+const DB_KEY = 'etijorat_db_v1';
+function saveDB(){
+  try{
+    localStorage.setItem(DB_KEY, JSON.stringify({
+      users, products, orders, cart,
+      nextUserId, nextProdId, nextOrderId,
+      sessionId: session ? session.id : null
+    }));
+  }catch(e){}
+}
+function loadDB(){
+  try{
+    const raw = localStorage.getItem(DB_KEY);
+    if(!raw) return;
+    const d = JSON.parse(raw);
+    if(d.users) users = d.users;
+    if(d.products) products = d.products;
+    if(d.orders) orders = d.orders;
+    if(d.cart) cart = d.cart;
+    if(d.nextUserId) nextUserId = d.nextUserId;
+    if(d.nextProdId) nextProdId = d.nextProdId;
+    if(d.nextOrderId) nextOrderId = d.nextOrderId;
+    if(d.sessionId){
+      const s = users.find(u=>u.id===d.sessionId);
+      if(s && s.active){ session = s; curTab = s.role==='admin'?'dash':'shop'; }
+    }
+  }catch(e){}
+}
+
+const fmt = n => n.toLocaleString('ru-RU') + " so'm";
+const $ = id => document.getElementById(id);
+function imgTag(src,cls){
+  return `<img class="${cls||''}" src="${src}" alt="" onerror="this.outerHTML='<div class=\\'ph\\'>🖼️</div>'">`;
+}
+function imgSmall(src){
+  return `<img src="${src}" alt="" onerror="this.style.background='var(--gold)'">`;
+}
+
+/* ============================================================
+   TOPBAR RENDER
+   ============================================================ */
+function renderTopbar(){
+  const r=$('topRight'), chip=$('roleChip');
+  if(!session){
+    chip.classList.add('hidden');
+    r.innerHTML = `<button class="btn-out" onclick="openAuth('login')">Kirish</button>
+                   <button class="btn-fill" onclick="openAuth('register')">Ro‘yxatdan o‘tish</button>`;
+  } else if(session.role==='admin'){
+    chip.textContent='Admin'; chip.className='role-chip role-admin';
+    r.innerHTML = `<span class="user-name">${session.name}</span>
+                   <button class="btn-out" onclick="logout()">Chiqish</button>`;
+  } else {
+    chip.textContent='Foydalanuvchi'; chip.className='role-chip role-user';
+    r.innerHTML = `<span class="user-name">${session.name}</span>
+                   <button class="cart-btn" onclick="openCart()">🛒 Savat <span class="cart-badge hidden" id="cartBadge">0</span></button>
+                   <button class="btn-out" onclick="logout()">Chiqish</button>`;
+  }
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+function renderTabs(){
+  const bar=$('tabBar');
+  if(!session){ bar.classList.add('hidden'); return; }
+  bar.classList.remove('hidden');
+  const tabs = session.role==='admin'
+    ? [['dash','📊 Boshqaruv panel'],['products','📦 Mahsulotlar'],['orders','🧾 Buyurtmalar'],['users','👥 Foydalanuvchilar']]
+    : [['shop','🛍️ Do‘kon'],['myorders','📦 Buyurtmalarim']];
+  if(!tabs.find(t=>t[0]===curTab)) curTab=tabs[0][0];
+  bar.innerHTML = tabs.map(([id,lbl])=>
+    `<button class="tab ${id===curTab?'active':''}" data-tab="${id}" onclick="switchTab('${id}')">${lbl}</button>`).join('');
+}
+function switchTab(id){ curTab=id; render(); }
+
+/* ============================================================
+   MAIN RENDER
+   ============================================================ */
+function render(){
+  renderTopbar();
+  renderTabs();
+  const v=$('view');
+  if(!session){ v.innerHTML = viewStorefront(); afterShopRender(); return; }
+  if(session.role==='admin'){
+    if(curTab==='dash') v.innerHTML=viewDash();
+    else if(curTab==='products') v.innerHTML=viewAdminProducts();
+    else if(curTab==='orders') v.innerHTML=viewAdminOrders();
+    else if(curTab==='users') v.innerHTML=viewAdminUsers();
+  } else {
+    if(curTab==='shop'){ v.innerHTML=viewShop(); afterShopRender(); }
+    else if(curTab==='myorders') v.innerHTML=viewMyOrders();
+  }
+  updateCartBadge();
+}
+function goHome(){ if(session&&session.role==='user'){curTab='shop';} render(); window.scrollTo({top:0,behavior:'smooth'}); }
+
+/* ============================================================
+   PUBLIC STOREFRONT (mehmon — kirmagan)
+   ============================================================ */
+function viewStorefront(){
+  return `
+  <div class="hero">
+    <div class="hero-content">
+      <div class="tagline">Raqamli iqtisodiyot · Onlayn savdo</div>
+      <h1>Zamonaviy onlayn do‘kon</h1>
+      <p>Elektronika, moda va uy buyumlari — barchasi bir joyda. Ro‘yxatdan o‘ting, savatga qo‘shing va xavfsiz to‘lov qiling.</p>
+      <a class="cta" onclick="openAuth('register')">Hoziroq boshlash →</a>
+    </div>
+  </div>
+  ${shopFiltersAndGrid(false)}`;
+}
+
+/* ============================================================
+   USER: SHOP
+   ============================================================ */
+function viewShop(){
+  return `<div class="section-head"><h2>Mahsulotlar katalogi</h2></div>${shopFiltersAndGrid(true)}`;
+}
+function shopFiltersAndGrid(canBuy){
+  const cats=['all',...new Set(products.map(p=>p.cat))];
+  return `
+  <div class="filters">
+    <input class="search-box" id="searchInput" placeholder="🔍 Mahsulot qidirish..." value="${filterText}" oninput="filterText=this.value;renderGrid(${canBuy})">
+    <select class="cat-select" onchange="filterCat=this.value;renderGrid(${canBuy})">
+      ${cats.map(c=>`<option value="${c}" ${filterCat===c?'selected':''}>${c==='all'?'Barcha toifalar':c}</option>`).join('')}
+    </select>
+  </div>
+  <div class="grid" id="shopGrid"></div>`;
+}
+function afterShopRender(){ renderGrid(session&&session.role==='user'); }
+function renderGrid(canBuy){
+  const g=$('shopGrid'); if(!g) return;
+  const list=products.filter(p=>
+    (filterCat==='all'||p.cat===filterCat) &&
+    p.name.toLowerCase().includes(filterText.toLowerCase()));
+  g.innerHTML = list.length ? list.map(p=>`
+    <div class="card">
+      <div class="img">${imgTag(p.img)}</div>
+      <div class="body">
+        <span class="cat">${p.cat}</span>
+        <h3>${p.name}</h3>
+        <p class="desc">${p.desc}</p>
+        <div class="row">
+          <span class="price">${fmt(p.price)}</span>
+          <span class="stock ${p.stock<=8?'low':''}">${p.stock>0?p.stock+' dona':'Tugagan'}</span>
+        </div>
+        ${canBuy
+          ? `<button class="add-btn" ${p.stock<=0?'disabled':''} onclick="addToCart(${p.id})">${p.stock>0?'Savatga qo‘shish':'Mavjud emas'}</button>`
+          : `<button class="add-btn" onclick="openAuth('login')">Sotib olish uchun kiring</button>`}
+      </div>
+    </div>`).join('') : '<div style="grid-column:1/-1">'+emptyState('🔍','Hech narsa topilmadi')+'</div>';
+}
+
+/* ============================================================
+   AUTH: LOGIN / REGISTER
+   ============================================================ */
+function openAuth(mode){
+  if(mode==='login') showLogin(); else showRegister();
+}
+function showLogin(){
+  showModal(`
+    <div class="modal-head"><h2>Tizimga kirish</h2><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>Login</label><input id="lgUser" placeholder="Foydalanuvchi nomi" autocomplete="off"></div>
+    <div class="field"><label>Parol</label><input id="lgPass" type="password" placeholder="Parol"></div>
+    <button class="btn-primary" onclick="doLogin()">Kirish →</button>
+    <div class="err" id="lgErr"></div>
+    <div class="switch-line">Hisobingiz yo‘qmi? <b onclick="showRegister()">Ro‘yxatdan o‘ting</b></div>
+    <div class="hint"><b>Admin demo:</b> admin / admin123</div>
+  `);
+  setTimeout(()=>{const i=$('lgPass');if(i)i.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});},50);
+}
+function doLogin(){
+  const u=$('lgUser').value.trim(), p=$('lgPass').value;
+  const f=users.find(x=>x.username===u && x.pass===p);
+  if(!f){ $('lgErr').textContent='✕ Login yoki parol noto‘g‘ri'; return; }
+  if(!f.active){ $('lgErr').textContent='✕ Hisobingiz bloklangan'; return; }
+  session=f; closeModal();
+  curTab = f.role==='admin'?'dash':'shop';
+  saveDB();
+  toast('Xush kelibsiz, '+f.name+'!','ok');
+  render();
+}
+function showRegister(){
+  showModal(`
+    <div class="modal-head"><h2>Ro‘yxatdan o‘tish</h2><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>To‘liq ism</label><input id="rgName" placeholder="Ism Familiya"></div>
+    <div class="form-grid">
+      <div class="field"><label>Login</label><input id="rgUser" placeholder="login" autocomplete="off"></div>
+      <div class="field"><label>Email</label><input id="rgEmail" placeholder="mail@example.uz"></div>
+    </div>
+    <div class="form-grid">
+      <div class="field"><label>Parol</label><input id="rgPass" type="password" placeholder="kamida 5 belgi"></div>
+      <div class="field"><label>Parolni tasdiqlang</label><input id="rgPass2" type="password" placeholder="qayta kiriting"></div>
+    </div>
+    <button class="btn-primary" onclick="doRegister()">Ro‘yxatdan o‘tish</button>
+    <div class="err" id="rgErr"></div>
+    <div class="switch-line">Hisobingiz bormi? <b onclick="showLogin()">Kirish</b></div>
+  `);
+}
+function doRegister(){
+  const name=$('rgName').value.trim(), u=$('rgUser').value.trim(),
+        email=$('rgEmail').value.trim(), p=$('rgPass').value, p2=$('rgPass2').value;
+  const e=$('rgErr');
+  if(!name||!u||!email||!p){ e.textContent='✕ Barcha maydonlarni to‘ldiring'; return; }
+  if(p.length<5){ e.textContent='✕ Parol kamida 5 belgidan iborat bo‘lsin'; return; }
+  if(p!==p2){ e.textContent='✕ Parollar mos kelmadi'; return; }
+  if(users.find(x=>x.username===u)){ e.textContent='✕ Bu login band'; return; }
+  const nu={id:nextUserId++, username:u, pass:p, role:'user', name, email, active:true, joined:new Date().toISOString().slice(0,10)};
+  users.push(nu);
+  session=nu; closeModal(); curTab='shop';
+  saveDB();
+  toast('Ro‘yxatdan o‘tdingiz! Xush kelibsiz.','ok');
+  render();
+}
+function logout(){ session=null; cart=[]; curTab=''; saveDB(); closeModal(); render(); window.scrollTo({top:0}); }
+
+/* ============================================================
+   ADMIN: DASHBOARD
+   ============================================================ */
+function viewDash(){
+  const totalRev=orders.filter(o=>o.status!=='cancel').reduce((s,o)=>s+o.total,0);
+  const paidCnt=orders.filter(o=>o.status==='paid'||o.status==='shipped').length;
+  const lowStock=products.filter(p=>p.stock<=8).length;
+  const userCnt=users.filter(u=>u.role==='user').length;
+  const catSales={};
+  orders.forEach(o=>o.items.forEach(it=>{
+    const pr=products.find(p=>p.name===it.name); const c=pr?pr.cat:'Boshqa';
+    catSales[c]=(catSales[c]||0)+it.price*it.qty;
+  }));
+  const cats=Object.entries(catSales); const max=Math.max(...cats.map(c=>c[1]),1);
+  const bars=cats.map(([c,v])=>`<div class="bar" style="height:${Math.max(8,v/max*140)}px"><b>${Math.round(v/1000)}k</b><span>${c}</span></div>`).join('')||'<p class="empty">Ma\'lumot yo‘q</p>';
+  return `
+  <div class="stats">
+    <div class="stat"><div class="ic">💰</div><div class="label">Umumiy aylanma</div><div class="val">${(totalRev/1000000).toFixed(2)}M</div></div>
+    <div class="stat"><div class="ic">🧾</div><div class="label">Buyurtmalar</div><div class="val">${orders.length}</div></div>
+    <div class="stat"><div class="ic">👥</div><div class="label">Mijozlar</div><div class="val">${userCnt}</div></div>
+    <div class="stat"><div class="ic">⚠️</div><div class="label">Kam qolgan tovar</div><div class="val">${lowStock}</div></div>
+  </div>
+  <div class="section-head"><h2>Toifalar bo‘yicha savdo</h2></div>
+  <div class="table-wrap" style="padding:20px 24px"><div class="mini-bars">${bars}</div></div>
+  <div class="section-head" style="margin-top:34px"><h2>So‘nggi buyurtmalar</h2></div>
+  <div class="table-wrap"><table><thead><tr><th>№</th><th>Mijoz</th><th>Summa</th><th>To‘lov</th><th>Holat</th><th>Sana</th></tr></thead>
+  <tbody>${orders.slice(-5).reverse().map(o=>`<tr><td>#${o.id}</td><td>${o.user}</td><td>${fmt(o.total)}</td><td>${o.method}</td><td>${statusBadge(o.status)}</td><td>${o.date}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+/* ============================================================
+   ADMIN: PRODUCTS
+   ============================================================ */
+function viewAdminProducts(){
+  return `
+  <div class="section-head"><h2>Mahsulotlar</h2>
+    <button class="btn-fill" onclick="openProductForm()">+ Yangi mahsulot</button></div>
+  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Mahsulot</th><th>Toifa</th><th>Narx</th><th>Ombor</th><th>Amallar</th></tr></thead>
+  <tbody>${products.map(p=>`<tr>
+    <td>#${p.id}</td>
+    <td><div class="tprod">${imgSmall(p.img)}<span>${p.name}</span></div></td>
+    <td>${p.cat}</td><td>${fmt(p.price)}</td>
+    <td><span class="${p.stock<=8?'stock low':''}">${p.stock} dona</span></td>
+    <td><button class="ico-btn" onclick="openProductForm(${p.id})">Tahrir</button>
+        <button class="ico-btn danger" onclick="confirmAction('product',${p.id})">O‘chirish</button></td>
+  </tr>`).join('')}</tbody></table></div>`;
+}
+function openProductForm(id){
+  const p=id?products.find(x=>x.id===id):null;
+  showModal(`
+    <div class="modal-head"><h2>${p?'Tahrirlash':'Yangi mahsulot'}</h2><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>Nomi</label><input id="pfName" value="${p?p.name:''}"></div>
+    <div class="form-grid">
+      <div class="field"><label>Toifa</label><input id="pfCat" value="${p?p.cat:''}" placeholder="Elektronika"></div>
+      <div class="field"><label>Rasm fayli</label><input id="pfImg" value="${p?p.img:'images/'}" placeholder="images/rasm.jpg"></div>
+    </div>
+    <div class="form-grid">
+      <div class="field"><label>Narx (so‘m)</label><input id="pfPrice" type="number" value="${p?p.price:''}"></div>
+      <div class="field"><label>Ombor</label><input id="pfStock" type="number" value="${p?p.stock:''}"></div>
+    </div>
+    <div class="field"><label>Tavsif</label><textarea id="pfDesc" rows="2">${p?p.desc:''}</textarea></div>
+    <button class="btn-primary" onclick="saveProduct(${id||0})">${p?'Saqlash':'Qo‘shish'}</button>
+    <div class="err" id="pfErr"></div>
+  `);
+}
+function saveProduct(id){
+  const name=$('pfName').value.trim(),cat=$('pfCat').value.trim(),img=$('pfImg').value.trim()||'images/placeholder.jpg';
+  const price=+$('pfPrice').value,stock=+$('pfStock').value,desc=$('pfDesc').value.trim();
+  if(!name||!cat||!price||price<0||stock<0){$('pfErr').textContent='✕ Maydonlarni to‘g‘ri to‘ldiring';return;}
+  if(id){Object.assign(products.find(x=>x.id===id),{name,cat,price,stock,img,desc});toast('Yangilandi','ok');}
+  else{products.push({id:nextProdId++,name,cat,price,stock,img,desc});toast('Qo‘shildi','ok');}
+  saveDB();closeModal();render();
+}
+
+/* ============================================================
+   ADMIN: ORDERS
+   ============================================================ */
+function viewAdminOrders(){
+  if(!orders.length) return `<div class="section-head"><h2>Buyurtmalar</h2></div>`+emptyState('🧾','Buyurtmalar yo‘q');
+  return `
+  <div class="section-head"><h2>Barcha buyurtmalar</h2></div>
+  <div class="table-wrap"><table><thead><tr><th>№</th><th>Mijoz</th><th>Tovarlar</th><th>Summa</th><th>To‘lov</th><th>Holat</th><th>Boshqaruv</th></tr></thead>
+  <tbody>${orders.slice().reverse().map(o=>`<tr>
+    <td>#${o.id}</td><td>${o.user}</td>
+    <td style="font-size:.84rem">${o.items.map(i=>`${i.name} ×${i.qty}`).join(', ')}</td>
+    <td>${fmt(o.total)}</td><td>${o.method}</td><td>${statusBadge(o.status)}</td>
+    <td><select class="cat-select" style="padding:7px 10px;font-size:.82rem" onchange="setStatus(${o.id},this.value)">
+      ${['pending','paid','shipped','cancel'].map(s=>`<option value="${s}" ${o.status===s?'selected':''}>${statusText(s)}</option>`).join('')}
+    </select></td></tr>`).join('')}</tbody></table></div>`;
+}
+function setStatus(id,s){const o=orders.find(x=>x.id===id);if(o){o.status=s;saveDB();render();toast('Holat yangilandi','ok');}}
+
+/* ============================================================
+   ADMIN: USERS MANAGEMENT
+   ============================================================ */
+function viewAdminUsers(){
+  return `
+  <div class="section-head"><h2>Foydalanuvchilar</h2>
+    <button class="btn-fill" onclick="openUserForm()">+ Yangi foydalanuvchi</button></div>
+  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Ism</th><th>Login</th><th>Email</th><th>Rol</th><th>Holat</th><th>Qo‘shilgan</th><th>Amallar</th></tr></thead>
+  <tbody>${users.map(u=>`<tr>
+    <td>#${u.id}</td><td>${u.name}</td><td>${u.username}</td><td style="font-size:.85rem">${u.email}</td>
+    <td><span class="badge ${u.role==='admin'?'b-admin':'b-user'}">${u.role==='admin'?'Admin':'Mijoz'}</span></td>
+    <td><span class="badge ${u.active?'b-paid':'b-cancel'}">${u.active?'Faol':'Bloklangan'}</span></td>
+    <td style="font-size:.85rem">${u.joined}</td>
+    <td>
+      <button class="ico-btn" onclick="openUserForm(${u.id})">Tahrir</button>
+      ${u.id!==session.id?`<button class="ico-btn" onclick="toggleUser(${u.id})">${u.active?'Bloklash':'Faollash'}</button>
+      <button class="ico-btn danger" onclick="confirmAction('user',${u.id})">O‘chirish</button>`:''}
+    </td></tr>`).join('')}</tbody></table></div>`;
+}
+function openUserForm(id){
+  const u=id?users.find(x=>x.id===id):null;
+  showModal(`
+    <div class="modal-head"><h2>${u?'Foydalanuvchini tahrirlash':'Yangi foydalanuvchi'}</h2><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>To‘liq ism</label><input id="ufName" value="${u?u.name:''}"></div>
+    <div class="form-grid">
+      <div class="field"><label>Login</label><input id="ufUser" value="${u?u.username:''}"></div>
+      <div class="field"><label>Email</label><input id="ufEmail" value="${u?u.email:''}"></div>
+    </div>
+    <div class="form-grid">
+      <div class="field"><label>Parol ${u?'(o‘zgartirish uchun)':''}</label><input id="ufPass" type="text" value="${u?u.pass:''}" placeholder="parol"></div>
+      <div class="field"><label>Rol</label><select id="ufRole">
+        <option value="user" ${u&&u.role==='user'?'selected':''}>Mijoz</option>
+        <option value="admin" ${u&&u.role==='admin'?'selected':''}>Admin</option>
+      </select></div>
+    </div>
+    <button class="btn-primary" onclick="saveUser(${id||0})">${u?'Saqlash':'Qo‘shish'}</button>
+    <div class="err" id="ufErr"></div>
+  `);
+}
+function saveUser(id){
+  const name=$('ufName').value.trim(),u=$('ufUser').value.trim(),email=$('ufEmail').value.trim(),
+        pass=$('ufPass').value,role=$('ufRole').value;
+  const e=$('ufErr');
+  if(!name||!u||!email||!pass){e.textContent='✕ Barcha maydonlarni to‘ldiring';return;}
+  const dup=users.find(x=>x.username===u && x.id!==id);
+  if(dup){e.textContent='✕ Bu login band';return;}
+  if(id){Object.assign(users.find(x=>x.id===id),{name,username:u,email,pass,role});toast('Yangilandi','ok');}
+  else{users.push({id:nextUserId++,username:u,pass,role,name,email,active:true,joined:new Date().toISOString().slice(0,10)});toast('Qo‘shildi','ok');}
+  saveDB();closeModal();render();
+}
+function toggleUser(id){const u=users.find(x=>x.id===id);if(u){u.active=!u.active;saveDB();render();toast(u.active?'Faollashtirildi':'Bloklandi','ok');}}
+
+/* ============================================================
+   CONFIRM DELETE (umumiy)
+   ============================================================ */
+function confirmAction(type,id){
+  const txt=type==='product'?'mahsulotni':'foydalanuvchini';
+  showModal(`
+    <div class="modal-head"><h2>O‘chirishni tasdiqlang</h2><button class="close-x" onclick="closeModal()">✕</button></div>
+    <p style="color:#6b5d4a;margin-bottom:22px">Ushbu ${txt} o‘chirmoqchimisiz? Bu amalni qaytarib bo‘lmaydi.</p>
+    <div style="display:flex;gap:10px">
+      <button class="btn-out" style="flex:1" onclick="closeModal()">Bekor</button>
+      <button class="btn-primary" style="flex:1;background:var(--red)" onclick="doDelete('${type}',${id})">O‘chirish</button>
+    </div>`);
+}
+function doDelete(type,id){
+  if(type==='product') products=products.filter(p=>p.id!==id);
+  else users=users.filter(u=>u.id!==id);
+  saveDB();closeModal();render();toast('O‘chirildi','ok');
+}
+
+/* ============================================================
+   USER: MY ORDERS
+   ============================================================ */
+function viewMyOrders(){
+  const mine=orders.filter(o=>o.user===session.name);
+  if(!mine.length) return `<div class="section-head"><h2>Buyurtmalarim</h2></div>`+emptyState('📦','Sizda hali buyurtmalar yo‘q');
+  return `
+  <div class="section-head"><h2>Mening buyurtmalarim</h2></div>
+  <div class="table-wrap"><table><thead><tr><th>№</th><th>Tovarlar</th><th>Summa</th><th>To‘lov</th><th>Holat</th><th>Sana</th></tr></thead>
+  <tbody>${mine.slice().reverse().map(o=>`<tr><td>#${o.id}</td>
+    <td style="font-size:.84rem">${o.items.map(i=>`${i.name} ×${i.qty}`).join(', ')}</td>
+    <td>${fmt(o.total)}</td><td>${o.method}</td><td>${statusBadge(o.status)}</td><td>${o.date}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+/* ============================================================
+   CART + CHECKOUT
+   ============================================================ */
+function addToCart(pid){
+  const p=products.find(x=>x.id===pid); if(!p||p.stock<=0)return;
+  const ex=cart.find(c=>c.id===pid);
+  if(ex){if(ex.qty<p.stock)ex.qty++;else{toast('Omborda yetarli emas','bad');return;}}
+  else cart.push({id:pid,name:p.name,price:p.price,img:p.img,qty:1});
+  saveDB();updateCartBadge();toast(p.name+' savatga qo‘shildi','ok');
+}
+function updateCartBadge(){const b=$('cartBadge');if(!b)return;const n=cart.reduce((s,c)=>s+c.qty,0);if(n>0){b.textContent=n;b.classList.remove('hidden');}else b.classList.add('hidden');}
+function changeQty(pid,d){
+  const c=cart.find(x=>x.id===pid);if(!c)return;const p=products.find(x=>x.id===pid);
+  c.qty+=d;
+  if(c.qty<=0)cart=cart.filter(x=>x.id!==pid);
+  else if(c.qty>p.stock){c.qty=p.stock;toast('Omborda yetarli emas','bad');}
+  saveDB();openCart();
+}
+function openCart(){
+  const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
+  const body=cart.length?cart.map(c=>`
+    <div class="cart-item">
+      ${imgTag(c.img,'ci-img')}
+      <div class="ci-info"><h4>${c.name}</h4><div class="p">${fmt(c.price)}</div></div>
+      <div class="qty"><button onclick="changeQty(${c.id},-1)">−</button><span>${c.qty}</span><button onclick="changeQty(${c.id},1)">+</button></div>
+    </div>`).join(''):emptyState('🛒','Savat bo‘sh');
+  showDrawer(`
+    <div class="drawer-head"><h2>Savat</h2><button class="close-x" onclick="closeModal()">✕</button></div>
+    ${body}
+    ${cart.length?`<div class="cart-total"><span class="t-label">Jami:</span><span class="t-val">${fmt(total)}</span></div>
+    <button class="btn-primary" onclick="openCheckout()">To‘lovga o‘tish →</button>`:''}`);
+}
+function openCheckout(){
+  selectedPay='Karta';
+  const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
+  showModal(`
+    <div class="modal-head"><h2>Buyurtmani rasmiylashtirish</h2><button class="close-x" onclick="closeModal()">✕</button></div>
+    <div class="field"><label>Yetkazib berish manzili</label><input id="ckAddr" placeholder="Shahar, ko‘cha, uy"></div>
+    <div class="form-grid">
+      <div class="field"><label>Telefon</label><input id="ckPhone" placeholder="+998 __ ___"></div>
+      <div class="field"><label>Qabul qiluvchi</label><input id="ckName" value="${session.name}"></div>
+    </div>
+    <label style="font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#7a6b54">To‘lov usuli</label>
+    <div class="pay-methods">
+      ${['Karta','Click','Payme','Naqd'].map(m=>`<div class="pay-opt ${m==='Karta'?'sel':''}" data-pay="${m}" onclick="selectPay('${m}')">
+        <span class="pi">${m==='Karta'?'💳':m==='Click'?'📱':m==='Payme'?'🔵':'💵'}</span>${m}</div>`).join('')}
+    </div>
+    <div class="cart-total"><span class="t-label">To‘lov summasi:</span><span class="t-val">${fmt(total)}</span></div>
+    <button class="btn-primary" onclick="placeOrder()">To‘lovni tasdiqlash 🔒</button>
+    <div class="err" id="ckErr"></div>`);
+}
+function selectPay(m){selectedPay=m;document.querySelectorAll('.pay-opt').forEach(o=>o.classList.toggle('sel',o.dataset.pay===m));}
+function placeOrder(){
+  const addr=$('ckAddr').value.trim(),phone=$('ckPhone').value.trim();
+  if(!addr||!phone){$('ckErr').textContent='✕ Manzil va telefonni kiriting';return;}
+  const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
+  cart.forEach(c=>{const p=products.find(x=>x.id===c.id);if(p)p.stock=Math.max(0,p.stock-c.qty);});
+  const order={id:nextOrderId++,user:session.name,items:cart.map(c=>({name:c.name,qty:c.qty,price:c.price})),
+    total,status:selectedPay==='Naqd'?'pending':'paid',method:selectedPay,date:new Date().toISOString().slice(0,10)};
+  orders.push(order);cart=[];closeModal();updateCartBadge();
+  saveDB();
+  toast(`Buyurtma #${order.id} qabul qilindi ✓`,'ok');
+  curTab='myorders';render();
+}
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function showDrawer(h){$('modalRoot').innerHTML=`<div class="overlay" onclick="if(event.target===this)closeModal()"><div class="drawer">${h}</div></div>`;}
+function showModal(h){$('modalRoot').innerHTML=`<div class="overlay center" onclick="if(event.target===this)closeModal()"><div class="modal">${h}</div></div>`;}
+function closeModal(){$('modalRoot').innerHTML='';}
+function toast(msg,type){const t=document.createElement('div');t.className='toast '+(type||'');t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2400);}
+function emptyState(ic,txt){return `<div class="empty"><div class="e-ic">${ic}</div><p>${txt}</p></div>`;}
+function statusText(s){return {pending:'Kutilmoqda',paid:'To‘langan',shipped:'Yetkazildi',cancel:'Bekor qilingan'}[s]||s;}
+function statusBadge(s){const cls={pending:'b-pending',paid:'b-paid',shipped:'b-shipped',cancel:'b-cancel'}[s];return `<span class="badge ${cls}">${statusText(s)}</span>`;}
+
+/* START */
+loadDB();
+render();
+</script>
+</body>
+</html>
